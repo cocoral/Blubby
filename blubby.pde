@@ -196,17 +196,22 @@ class Cell {
       return;
     }
     
-    strokeWeight(5);
-    stroke(255, 0, 0);
-    Point prev = cellWall.get(0);
-    prev.draw();
-    for (int i = 1; i < cellWall.size(); i++) {
+    PShape cellShape;  // The PShape object
+
+    cellShape = createShape();
+    cellShape.beginShape();
+    cellShape.fill(255,0,0,10);
+    cellShape.strokeWeight(0);
+    cellShape.strokeJoin(ROUND);
+    cellShape.stroke(255,0,0);
+    for (int i = 0; i < cellWall.size();i++){
       Point point = cellWall.get(i);
-      point.draw();
-      line(prev.x, prev.y, point.x, point.y);
-      prev = point;
+      cellShape.vertex(point.x, point.y);
     }
-    line(cellWall.get(0).x, cellWall.get(0).y, prev.x, prev.y);
+    cellShape.vertex(cellWall.get(0).x, cellWall.get(0).y);
+    cellShape.endShape();
+    shape(cellShape, 0, 0);
+    
     
     for (Cell cell: bubbles) {
       cell.draw();
