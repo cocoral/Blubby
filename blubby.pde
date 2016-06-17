@@ -73,6 +73,11 @@ class Cell {
   float wallK = 0.5;
   float innerK = 0.001;
   float innerBubbleF = 1;
+  int r = int(random(0,200));
+  int g = int(random(0,200));
+  int b = int(random(0,200));
+  
+  
   
   Cell(float x, float y, int size) {
     float rad = 1.0 / size * 2*PI;
@@ -164,9 +169,14 @@ class Cell {
       if (!isCellContained(cell, this)) {
         cellsToAdd.add(cell);
         cellToRemove.add(cell);
-      } else if (random(1) < 0.1) { // eating the bubbles
+      } else if (random(1) < 0.1) { // eating the bubblnes
         cell.cellWall.remove(cell.cellWall.size() - 1);
         addPoint();
+        float p = 1.0/this.cellWall.size();
+        this.r = int(this.r*(1-p)+cell.r*p);
+        this.g = int(this.g*(1-p)+cell.g*p);
+        this.b = int(this.b*(1-p)+cell.b*p);
+        
         if (cell.cellWall.size() == 0) {
           cellToRemove.add(cell);
         }
@@ -200,10 +210,10 @@ class Cell {
 
     cellShape = createShape();
     cellShape.beginShape();
-    cellShape.fill(255,0,0,10);
-    cellShape.strokeWeight(0);
-    cellShape.strokeJoin(ROUND);
-    cellShape.stroke(255,0,0);
+    cellShape.fill(r,g,b,40);
+    //cellShape.strokeWeight(0);
+    //cellShape.strokeJoin(ROUND);
+    cellShape.noStroke();
     for (int i = 0; i < cellWall.size();i++){
       Point point = cellWall.get(i);
       cellShape.vertex(point.x, point.y);
